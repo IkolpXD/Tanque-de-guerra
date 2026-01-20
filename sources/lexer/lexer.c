@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 18:47:37 by made-jes          #+#    #+#             */
-/*   Updated: 2025/06/15 19:35:30 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/01/12 22:35:29 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,10 @@ t_token	*new_token(char *value)
 		return (NULL);
 	token->value = ft_strdup(value);
 	token->type = get_token_type(value);
+	if (token->type == STR)
+		token->was_quoted = 1;
+	else
+		token->was_quoted = 0;
 	token->next = NULL;
 	return (token);
 }

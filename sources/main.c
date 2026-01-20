@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: made-jes <made-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 18:52:17 by made-jes          #+#    #+#             */
-/*   Updated: 2025/12/11 23:05:33 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/01/17 16:48:40 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	init_shell(envp);
 	setup_signals();
-	//print_env();
 	run_prompt();
 	free_env_list(get_shell()->env);
 	rl_clear_history();

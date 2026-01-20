@@ -31,6 +31,7 @@ t_token	*split_and_create_tokens(char *expanded)
 		if (parts[i][0] != '\0')
 		{
 			node = new_token(parts[i]);
+			node->was_quoted = 0;
 			append_token_list(&list, node);
 		}
 		free(parts[i]);

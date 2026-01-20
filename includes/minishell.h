@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 17:50:01 by made-jes          #+#    #+#             */
-/*   Updated: 2025/12/11 23:10:34 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/01/18 20:43:50 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_token
 {
 	char			*value;
 	t_token_type	type;
+	int				was_quoted;
 	struct s_token	*next;
 }				t_token;
 
@@ -51,6 +52,7 @@ typedef struct s_redir
 {
 	int				type;
 	char			*filename;
+	int				expand;
 	struct s_redir	*next;
 }				t_redir;
 
@@ -93,9 +95,9 @@ t_token_type	get_token_type(char *line);
 int				validate_syntax(t_token *tokens);
 t_ast			*build_ast(t_token *tokens);
 t_token			*find_last_pipe(t_token *tokens);
-int				count_args(t_token *tokens);
-void			fill_args(t_ast *node, t_token *tokens);
-void			add_redir(t_ast *node, int type, char *filename);
+int				count_args(t_token *start, t_token *end);
+void			fill_args(t_ast *node, t_token *start, t_token *end);
+void			add_redir(t_ast *node, int type, char *filename, int expand);
 void			print_ast(t_ast *node, int depth);
 
 //Expander

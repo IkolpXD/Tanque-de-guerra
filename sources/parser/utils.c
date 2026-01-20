@@ -26,22 +26,29 @@ t_token	*find_last_pipe(t_token *tokens)
 	return (last_pipe);
 }
 
-static void	parse_redirections(t_ast *node, t_token *tokens)
+static void	parse_redirections(t_ast *node, t_token *start, t_token *end)
 {
-	while (tokens)
+	int		should_expand;
+	t_token	*tokens;
+
+	tokens = start;
+	while (tokens && tokens != end)
 	{
 		if ((tokens->type == REDIR_IN || tokens->type == REDIR_OUT
 				|| tokens->type == APPEND || tokens->type == HEREDOC)
 			&& tokens->next)
 		{
-			add_redir(node, tokens->type, tokens->next->value);
+			should_expand = 1;
+			if (tokens->type == HEREDOC && tokens->next->was_quoted)
+				should_expand = 0;
+			add_redir(node, tokens->type, tokens->next->value, should_expand);
 			tokens = tokens->next;
 		}
 		tokens = tokens->next;
 	}
 }
 
-static t_ast	*parse_command_and_redirs(t_token *tokens)
+static t_ast	*parse_command_and_redirs(t_token *start, t_token *end)
 {
 	t_ast	*node;
 	int		count;
@@ -53,41 +60,51 @@ static t_ast	*parse_command_and_redirs(t_token *tokens)
 	node->left = NULL;
 	node->right = NULL;
 	node->redirs = NULL;
-	count = count_args(tokens);
+	count = count_args(start, end);
 	node->cmd_args = malloc(sizeof(char *) * (count + 1));
 	if (!node->cmd_args)
 	{
 		free(node);
 		return (NULL);
 	}
-	fill_args(node, tokens);
-	parse_redirections(node, tokens);
+	fill_args(node, start, end);
+	parse_redirections(node, start, end);
 	return (node);
 }
 
-t_ast	*build_ast(t_token *tokens)
+static t_ast	*build_ast_range(t_token *start, t_token *end)
 {
-	t_token	*pipe;
-	t_token	*left_tokens;
-	t_token	*right_tokens;
+	t_token *pipe;
+	t_token	*current;
 	t_ast	*node;
 
-	if (!tokens)
+	if (!start || start == end)
 		return (NULL);
-	pipe = find_last_pipe(tokens);
+	pipe = NULL;
+	current = start;
+	while (current && current != end)
+	{
+		if (current->type == PIPE && current->next != end)
+			pipe = current;
+		current = current->next;
+	}
 	if (pipe)
 	{
-		left_tokens = tokens;
-		right_tokens = pipe->next;
-		pipe->next = NULL;
 		node = malloc(sizeof(t_ast));
 		if (!node)
 			return (NULL);
 		node->type = NODE_PIPE;
-		node->left = build_ast(left_tokens);
-		node->right = build_ast(right_tokens);
+		node->cmd_args = NULL;
+		node->redirs = NULL;
+		node->left = build_ast_range(start, pipe);
+		node->right = build_ast_range(pipe->next, end);
 		return (node);
 	}
 	else
-		return (parse_command_and_redirs(tokens));
+		return (parse_command_and_redirs(start, end));
+}
+
+t_ast	*build_ast(t_token *tokens)
+{
+	return (build_ast_range(tokens, NULL));
 }

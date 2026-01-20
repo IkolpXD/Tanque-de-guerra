@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 20:00:48 by made-jes          #+#    #+#             */
-/*   Updated: 2025/11/30 17:38:48 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/01/18 20:40:51 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,14 @@ int	validate_syntax(t_token *tokens)
 	return (0);
 }
 
-int	count_args(t_token *tokens)
+int	count_args(t_token *start, t_token *end)
 {
-	int	count;
+	int		count;
+	t_token	*tokens;
 
 	count = 0;
-	while (tokens)
+	tokens = start;
+	while (tokens && tokens != end)
 	{
 		if (tokens->type == WORD || tokens->type == STR)
 			count++;
@@ -62,12 +64,14 @@ int	count_args(t_token *tokens)
 	return (count);
 }
 
-void	fill_args(t_ast *node, t_token *tokens)
+void	fill_args(t_ast *node, t_token *start, t_token *end)
 {
-	int	i;
+	int		i;
+	t_token	*tokens;
 
 	i = 0;
-	while (tokens)
+	tokens = start;
+	while (tokens && tokens != end)
 	{
 		if (tokens->type == WORD || tokens->type == STR)
 			node->cmd_args[i++] = ft_strdup(tokens->value);
@@ -79,7 +83,7 @@ void	fill_args(t_ast *node, t_token *tokens)
 	node->cmd_args[i] = NULL;
 }
 
-void	add_redir(t_ast *node, int type, char *filename)
+void	add_redir(t_ast *node, int type, char *filename, int expand)
 {
 	t_redir	*redir;
 	t_redir	*current;
@@ -89,6 +93,7 @@ void	add_redir(t_ast *node, int type, char *filename)
 		return ;
 	redir->type = type;
 	redir->filename = ft_strdup(filename);
+	redir->expand = expand;
 	redir->next = NULL;
 	if (!node->redirs)
 		node->redirs = redir;

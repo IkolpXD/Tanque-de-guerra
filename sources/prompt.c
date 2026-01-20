@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 19:33:21 by made-jes          #+#    #+#             */
-/*   Updated: 2025/12/11 19:28:03 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/01/18 20:50:07 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ void	run_prompt(void)
 			break ;
 		handle_builtin(line);
 		tokens = lexer(line);
-		printf("%s", "Before expansion:\n");
-		print_token_list(tokens);
+		//printf("%s", "Before expansion:\n");
+		//print_token_list(tokens);
 		expand_tokens(&tokens);
 		if (validate_syntax(tokens))
 		{
@@ -51,9 +51,10 @@ void	run_prompt(void)
 			free(line);
 			continue ;
 		}
-		printf("%s", "After expansion:\n");
+		//printf("%s", "After expansion:\n");
 		print_token_list(tokens);
 		get_shell()->ast = build_ast(tokens);
+		//printf("%s", "the problem is here:\n");
 		freeing_stuff(line, tokens);
 	}
 }

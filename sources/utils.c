@@ -28,7 +28,6 @@ static void	print_cmd_args(char **args)
 	}
 }
 
-// Recursively print the AST
 void	print_ast(t_ast *node, int level)
 {
 	t_redir		*redir;
@@ -37,9 +36,7 @@ void	print_ast(t_ast *node, int level)
 	if (!node)
 		return ;
 	redir = node->redirs;
-	// Print right subtree first (so it shows on top)
 	print_ast(node->right, level + 1);
-	// Print current node
 	print_indent(level);
 	if (node->type == NODE_PIPE)
 		printf("[PIPE]\n");
@@ -65,7 +62,6 @@ void	print_ast(t_ast *node, int level)
 			redir = redir->next;
 		}
 	}
-	// Print left subtree
 	print_ast(node->left, level + 1);
 }
 
