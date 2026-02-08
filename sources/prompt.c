@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 19:33:21 by made-jes          #+#    #+#             */
-/*   Updated: 2026/01/18 20:50:07 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/02/03 18:31:04 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,21 @@
 
 static void	freeing_stuff(char *line, t_token *tokens)
 {
-	print_ast(get_shell()->ast, 0);
+	//print_ast(get_shell()->ast, 0);
 	free_ast(get_shell()->ast);
 	get_shell()->ast = NULL;
 	free_token_list(tokens);
 	free(line);
 }
 
-static void	print_token_list(t_token *tokens)
+/*static void	print_token_list(t_token *tokens)
 {
 	while (tokens)
 	{
 		printf("Token: %-10s Type: %d\n", tokens->value, tokens->type);
 		tokens = tokens->next;
 	}
-}
+}*/
 
 void	run_prompt(void)
 {
@@ -52,7 +52,7 @@ void	run_prompt(void)
 			continue ;
 		}
 		//printf("%s", "After expansion:\n");
-		print_token_list(tokens);
+		//print_token_list(tokens);
 		get_shell()->ast = build_ast(tokens);
 		//printf("%s", "the problem is here:\n");
 		freeing_stuff(line, tokens);

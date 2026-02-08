@@ -32,6 +32,26 @@ void	setup_signals(void)
 	signal(SIGQUIT, handle_sigquit);
 }
 
+static void	update_env(t_env *env)
+{
+	int		current_lvl;
+	char	*new_value;
+
+	while (env)
+	{
+		if (ft_strncmp(env->key, "SHLVL", 6) == 0)
+		{
+			current_lvl = ft_atoi(env->value);
+			current_lvl++;
+			new_value = ft_itoa(current_lvl);
+			free(env->value);
+			env->value = new_value;
+			return ;
+		}
+		env = env->next;
+	}
+}
+
 void	handle_builtin(char *line)
 {
 	if (ft_strncmp(line, "clear", 6) == 0)
@@ -43,6 +63,12 @@ void	handle_builtin(char *line)
 	{
 		rl_clear_history();
 		exit(get_shell()->last_exit);
+	}
+	else if (ft_strncmp(line, "bash", 5) == 0)
+	{
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		update_env(get_shell()->env);
 	}
 	else
 		add_history(line);

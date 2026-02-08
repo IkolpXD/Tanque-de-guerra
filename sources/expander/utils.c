@@ -19,6 +19,7 @@ void	init_shell(char **envp)
 	sh = get_shell();
 	init_env(envp);
 	sh->last_exit = 0;
+	sh->fd = 0;
 }
 
 void	add_env_var(char *entry)

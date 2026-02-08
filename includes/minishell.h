@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 17:50:01 by made-jes          #+#    #+#             */
-/*   Updated: 2026/01/18 20:43:50 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/02/08 10:55:14 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ typedef struct s_shell
 	t_token		*tokens;
 	t_ast		*ast;
 	t_env		*env;
+	int			fd;
 	int			last_exit;
 }				t_shell;
 

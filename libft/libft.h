@@ -6,7 +6,7 @@
 /*   By: made-jes <made-jes@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 14:31:42 by made-jes          #+#    #+#             */
-/*   Updated: 2025/11/30 17:07:52 by made-jes         ###   ########.fr       */
+/*   Updated: 2026/02/03 18:28:01 by made-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void			*ft_memchr(const void *s, int c, size_t n);
 int				ft_memcmp(const void *s1, const void *s2, size_t n);
 char			*ft_strnstr(const char *big, const char *little, size_t len);
 long long		ft_atoll(char const *str);
+int				ft_atoi(const char *str);
 void			*ft_calloc(size_t nmemb, size_t size);
 char			*ft_strdup(char *src);
 char			*ft_substr(char const *s, unsigned int start, size_t len);
